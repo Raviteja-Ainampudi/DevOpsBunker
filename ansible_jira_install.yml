@@ -1,0 +1,33 @@
+---
+- name: Install JIRA
+  hosts: host.name.ip
+  become: true
+
+  tasks:
+    - name: Download JIRA Excecutable file
+      sudo: true
+      get_url:
+        url: https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-7.8.2-x64.bin
+        dest: /tmp/
+        mode: '0755'
+        expect:
+          command: bash /tmp/atlassian-jira-software-7.8.2-x64.bin
+          responses:
+            - o
+            - 2
+            - \n
+            - \n
+            - 1
+            - y
+            - i
+            - y
+
+    - name: Install MySQL Connector
+      sudo : true
+      get_url:
+        url: https://dev.mysql.com/get/archives/mysql-connector-java-5.1/mysql-connector-java-5.1.36.zip
+        dest: /tmp/
+      command: unzip /tmp/mysql-connector-java-5.1.36.zip
+
+    - name: Move MySQLConnector and restart JIRA App
+      command: cp mysql-connector-java-5.1.36-bin.jar  /opt/atlassian/jira/lib && /etc/init.d/jira stop && /etc/init.d/jira start
