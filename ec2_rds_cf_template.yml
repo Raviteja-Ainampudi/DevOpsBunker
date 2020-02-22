@@ -1,0 +1,32 @@
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP to client host
+      SecuirtyGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIP: 0.0.0.0/0
+  InstanceNode:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.large
+      ImageId: ami-063dd30adbb186909 # Amazon Linux AMI in N.California
+      UserData:
+        'Fn::Base64':
+          !Sub |
+            # Update dependencies
+            apt-get update
+            apt-get dist-upgrade
+
+            # Ansible Installation
+            apt-get 
+      SecurityGroups:
+        - !Ref InstanceSecurityGroup
+      Tags:
+        - Key: Name
+          Value: JIRA EC2 Instance
+        - Key: Type
+          Value: JIRA Server
+
