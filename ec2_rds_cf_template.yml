@@ -1,5 +1,5 @@
 Resources:
-  InstanceSecurityGroup:
+  InstanceSecurityGroups:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow HTTP to client host
@@ -8,6 +8,18 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIP: 0.0.0.0/0
+        - IpProtocol: tcp
+            FromPort: *
+            ToPort: 8080
+            CidrIP: 0.0.0.0/0
+        - IpProtocol: tcp
+            FromPort: *
+            ToPort: 8181
+            CidrIP: 0.0.0.0/0
+        - IpProtocol: tcp
+            FromPort: *
+            ToPort: 8005
+            CidrIP: 0.0.0.0/0
   InstanceNode:
     Type: AWS::EC2::Instance
     Properties:
@@ -23,13 +35,13 @@ Resources:
             # Ansible Installation
             apt-get install ansible -y
       SecurityGroups:
-        - !Ref InstanceSecurityGroup
+        - !Ref InstanceSecurityGroups
       Tags:
         - Key: Name
           Value: JIRA EC2 Instance
         - Key: Type
           Value: JIRA Server
-  DatabaseSecurityGroup:
+  DatabaseSecurityGroups:
     Type: AWS::RDS::DBsecurityGroup
     Properties:
       GroupDescription: Database Security Group
@@ -44,5 +56,5 @@ Resources:
       MasterUserPassword: tMXks28mRyBWpJni
       DBInstanceClass: db.t2.micro
       AllocatedStorage: '5
-
-
+      DBSecurityGroups:
+        - !Ref DatabaseSecurityGroups
