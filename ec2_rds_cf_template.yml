@@ -5,9 +5,13 @@ Resources:
       GroupDescription: Allow HTTP to client host
       SecuirtyGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIP: 0.0.0.0/0
+            FromPort: 22
+            ToPort: 22
+            CidrIP: 0.0.0.0/0
+        - IpProtocol: tcp
+            FromPort: 80
+            ToPort: 80
+            CidrIP: 0.0.0.0/0
         - IpProtocol: tcp
             FromPort: *
             ToPort: 8080
