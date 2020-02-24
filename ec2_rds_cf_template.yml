@@ -41,6 +41,10 @@ Resources:
 
             # Ansible Installation
             apt-get install ansible -y
+
+            # Running Ansible Playbook
+            wget https://github.com/Raviteja-Ainampudi/DevOpsBunker/blob/master/ansible_jira_install.yml -O /tmp/
+            ansible-playbook /tmp/ansible_jira_install.yml -f 10
       SecurityGroups:
         - !Ref InstanceSecurityGroups
       Tags:
